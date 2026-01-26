@@ -16,18 +16,7 @@ A full-featured quiz platform with user authentication, quiz creation, and inter
 - Real-time results and scoring
 - Responsive design
 
-**Live Demo:**
-- Frontend: [Vercel URL]
-- Backend: [Render URL]
 
-[View Project →](./Task-Quiz-Maker)
-
----
-
-### Task 2: [Coming Soon]
-
-
-## 👨‍💻 About
 
 **Name:** Rohini Sakure
 **Internship:** CODSOFT  

@@ -15,10 +15,15 @@ const app = express();
 connectDB();
 
 app.use(helmet());
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: [
+    "http://localhost:5173",
+    "https://online-quiz-maker-4cmjp50x-rohini-sakures-projects.vercel.app"
+  ],
   credentials: true
 }));
+
 app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'combined'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));

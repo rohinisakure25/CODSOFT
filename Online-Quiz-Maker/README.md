@@ -158,14 +158,7 @@ vercel
 
 ## 📦 Environment Variables
 
-### Backend (.env)
-```
-PORT=5000
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/quizmaker
-JWT_SECRET=minimum_32_character_secret_key_for_jwt
-NODE_ENV=development
-CLIENT_URL=http://localhost:5173
-```
+
 
 ### Frontend (.env)
 ```

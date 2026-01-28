@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { MapPin, DollarSign, Clock, Briefcase } from 'lucide-react';
 import Navbar from '../components/Navbar';
@@ -9,14 +9,12 @@ const JobDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchJob();
-  }, [id]);
-
-  const fetchJob = async () => {
+  // ✅ Memoized function (fixes ESLint error)
+  const fetchJob = useCallback(async () => {
     try {
       const response = await jobsAPI.getJob(id);
       setJob(response.data);
@@ -25,7 +23,11 @@ const JobDetail = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    fetchJob();
+  }, [fetchJob]);
 
   const timeAgo = (date) => {
     const seconds = Math.floor((new Date() - new Date(date)) / 1000);
@@ -38,8 +40,8 @@ const JobDetail = () => {
       minute: 60
     };
 
-    for (const [name, seconds_in_interval] of Object.entries(intervals)) {
-      const interval = Math.floor(seconds / seconds_in_interval);
+    for (const [name, secondsInInterval] of Object.entries(intervals)) {
+      const interval = Math.floor(seconds / secondsInInterval);
       if (interval >= 1) {
         return `${interval} ${name}${interval !== 1 ? 's' : ''} ago`;
       }
@@ -86,7 +88,7 @@ const JobDetail = () => {
           <div className="mb-6">
             <h2 className="text-3xl font-bold text-gray-900 mb-2">{job.title}</h2>
             <p className="text-xl text-blue-600 font-semibold mb-4">{job.company}</p>
-            
+
             <div className="flex flex-wrap gap-4 text-gray-600">
               <span className="flex items-center gap-1">
                 <MapPin size={18} /> {job.location}
@@ -105,10 +107,12 @@ const JobDetail = () => {
 
           <div className="mb-6">
             <h3 className="text-xl font-bold text-gray-900 mb-3">Job Description</h3>
-            <p className="text-gray-700 leading-relaxed whitespace-pre-line">{job.description}</p>
+            <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+              {job.description}
+            </p>
           </div>
 
-          {job.requirements && job.requirements.length > 0 && (
+          {job.requirements?.length > 0 && (
             <div className="mb-8">
               <h3 className="text-xl font-bold text-gray-900 mb-3">Requirements</h3>
               <ul className="list-disc list-inside space-y-2 text-gray-700">

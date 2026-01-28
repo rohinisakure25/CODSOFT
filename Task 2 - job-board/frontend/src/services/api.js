@@ -1,13 +1,16 @@
 import axios from 'axios';
 
+const API_BASE_URL =
+  process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  baseURL: API_BASE_URL,
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 });
 
+// Attach JWT token if present
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -16,9 +19,7 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 // Auth APIs
@@ -40,12 +41,14 @@ export const jobsAPI = {
 
 // Applications APIs
 export const applicationsAPI = {
-  submitApplication: (formData) => api.post('/applications', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' }
-  }),
+  submitApplication: (formData) =>
+    api.post('/applications', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }),
   getMyApplications: () => api.get('/applications/my-applications'),
   getJobApplications: (jobId) => api.get(`/applications/job/${jobId}`),
-  updateApplicationStatus: (id, status) => api.put(`/applications/${id}/status`, { status }),
+  updateApplicationStatus: (id, status) =>
+    api.put(`/applications/${id}/status`, { status }),
 };
 
 export default api;

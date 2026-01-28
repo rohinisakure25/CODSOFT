@@ -17,13 +17,17 @@ const app = express();
 connectDB();
 
 /* -------------------- MIDDLEWARE -------------------- */
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://job-board-frontend.vercel.app"
-  ],
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:5173',
+      'https://job-board-igickea4s-rohini-sakures-projects.vercel.app',
+    ],
+    credentials: true,
+  })
+);
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
